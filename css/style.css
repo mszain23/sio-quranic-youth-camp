@@ -1,0 +1,289 @@
+/* ═══════════════════════════════════════════════
+   RSC WORKBOOK 2026 — Global Stylesheet
+═══════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+
+:root {
+  --navy:   #1D3557;
+  --teal:   #457B9D;
+  --lteal:  #A8DADC;
+  --cream:  #F1FAEE;
+  --red:    #E63946;
+  --gold:   #C9A84C;
+  --bg:     #f5f3ee;
+  --white:  #ffffff;
+  --text:   #1a1a1a;
+  --muted:  #555555;
+
+  /* chapter accent colours */
+  --c1: #1D3557; --c2: #264653; --c3: #5B2D8E;
+  --c4: #B45309; --c5: #0B6E4F; --c6: #1E5799;
+  --c7: #7B3F00; --c8: #6B2737;
+
+  --radius: 12px;
+  --sidebar: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--sidebar); height: 100vh;
+  background: var(--navy);
+  overflow-y: auto; z-index: 200;
+  display: flex; flex-direction: column;
+}
+.sidebar-brand {
+  padding: 1.4rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  text-align: center;
+}
+/* SIO Logo */
+.sio-logo {
+  display: inline-block;
+  font-family: 'Goudy Bookletter 1911', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+  font-size: 28px; font-weight: 400; letter-spacing: 2px;
+  color: var(--gold); font-style: italic; margin-bottom: 4px;
+}
+.sidebar-brand .site-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: #fff; letter-spacing: .5px; line-height: 1.3;
+}
+.sidebar-brand .site-sub {
+  font-size: 10px; color: rgba(255,255,255,.45);
+  letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px;
+}
+#sidebar nav { flex: 1; padding: .75rem 0 2rem; }
+#sidebar nav a {
+  display: block; padding: .4rem 1.25rem;
+  color: rgba(255,255,255,.65); text-decoration: none;
+  font-size: 12.5px; font-weight: 600;
+  border-left: 3px solid transparent; transition: .15s;
+}
+#sidebar nav a:hover,
+#sidebar nav a.active { color: #fff; border-left-color: var(--gold); background: rgba(255,255,255,.05); }
+#sidebar nav .nav-chapter {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px;
+  color: var(--gold); padding: 1.1rem 1.25rem .3rem;
+  pointer-events: none;
+}
+#sidebar nav .nav-sub { padding-left: 2rem; font-weight: 400; }
+
+/* ── MAIN WRAPPER ── */
+#main { margin-left: var(--sidebar); min-height: 100vh; }
+
+/* ── TOPBAR (mobile) ── */
+#topbar {
+  display: none; position: sticky; top: 0; z-index: 100;
+  background: var(--navy); padding: .75rem 1.25rem;
+  align-items: center; justify-content: space-between;
+}
+#topbar .sio-logo { font-size: 20px; }
+#menu-btn { background: none; border: none; cursor: pointer; }
+#menu-btn span { display: block; width: 22px; height: 2px; background: #fff; margin: 4px 0; }
+
+/* ── SECTION LAYOUT ── */
+.page-section {
+  max-width: 860px;
+  padding: 3.5rem 3rem;
+}
+.page-section:nth-child(even) { background: var(--white); }
+.page-section:nth-child(odd)  { background: var(--bg); }
+
+/* ── CHAPTER HEADER ── */
+.chapter-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 2.5rem; padding-bottom: 1rem;
+  border-bottom: 3px solid var(--navy);
+}
+.ch-num {
+  background: var(--navy); color: var(--gold);
+  font-family: 'Amiri', serif; font-size: 26px;
+  width: 54px; height: 54px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ch-title h2 { font-family: 'Amiri', serif; font-size: clamp(20px,3vw,28px); color: var(--navy); }
+.ch-title p  { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+/* ── TYPOGRAPHY ── */
+h3 { font-size: 19px; color: var(--navy); margin: 2rem 0 .65rem; font-weight: 800; }
+h4 { font-size: 15px; color: var(--teal); margin: 1.5rem 0 .45rem; font-weight: 700; }
+p  { font-size: 15px; margin-bottom: .9rem; }
+ul, ol { margin: 0 0 1rem 1.4rem; }
+li { font-size: 15px; margin-bottom: .35rem; line-height: 1.65; }
+strong { font-weight: 700; }
+em { font-style: italic; }
+a  { color: var(--teal); }
+
+/* honorifics */
+.saw  { font-family: 'Amiri', serif; font-size: 1.1em; color: var(--navy); vertical-align: middle; }
+.as   { font-family: 'Amiri', serif; font-size: 1em;   color: #444;        vertical-align: middle; }
+.ra   { font-family: 'Amiri', serif; font-size: 1em;   color: #555;        vertical-align: middle; }
+.swt  { font-family: 'Amiri', serif; font-size: 1em;   color: var(--navy); vertical-align: middle; }
+
+/* ── ARABIC BLOCK ── */
+.arabic-block {
+  background: var(--navy); border-radius: var(--radius);
+  padding: 1.1rem 1.4rem; margin: 1.25rem 0; text-align: center;
+}
+.ar { font-family: 'Amiri', serif; font-size: clamp(18px,3vw,24px); color: var(--gold); direction: rtl; line-height: 1.8; margin-bottom: .4rem; }
+.tr { font-size: 13px; color: rgba(255,255,255,.75); font-style: italic; margin-bottom: .2rem; }
+.tl { font-size: 13px; color: rgba(255,255,255,.6); }
+
+/* ── QURAN VERSE ── */
+.quran-verse {
+  background: #fdf8ee; border-left: 4px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 1rem 1.25rem; margin: 1rem 0;
+}
+.quran-verse .ar { background: none; padding: 0; color: var(--navy); text-align: right; font-size: 20px; }
+.quran-verse .ref { font-size: 12px; color: var(--teal); font-weight: 700; margin-top: .3rem; }
+
+/* ── INFO BOXES ── */
+.box { border-left: 4px solid var(--teal); background: #e8f4fd; border-radius: 0 8px 8px 0; padding: .9rem 1.1rem; margin: 1rem 0; font-size: 14px; }
+.box.gold  { border-color: var(--gold);  background: #fdf6e3; }
+.box.green { border-color: #0B6E4F;      background: #e6f9f2; }
+.box.red   { border-color: var(--red);   background: #fdecea; }
+.box.navy  { border-color: var(--navy);  background: #eef1f7; }
+
+/* ── STEP LIST ── */
+.step-list { margin: 1rem 0; }
+.step-item { display: flex; gap: 12px; align-items: flex-start; padding: .65rem 0; border-bottom: 1px solid rgba(0,0,0,.07); }
+.step-item:last-child { border-bottom: none; }
+.step-num { background: var(--navy); color: #fff; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 3px; }
+.step-content { flex: 1; font-size: 14px; line-height: 1.6; }
+.step-content strong { color: var(--navy); }
+
+/* ── TABLES ── */
+.data-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 14px; }
+.data-table th { background: var(--navy); color: #fff; padding: .55rem .85rem; text-align: left; }
+.data-table td { padding: .55rem .85rem; border-bottom: 1px solid #e5e5e5; }
+.data-table tr:nth-child(even) td { background: #f8f6f0; }
+.data-table .label { font-weight: 700; color: var(--navy); }
+
+/* scrollable table wrapper */
+.table-wrap { overflow-x: auto; }
+
+/* ── CARD GRIDS ── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 14px; margin: 1.5rem 0; }
+.card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 1.5rem 0; }
+
+.pillar-card { border-radius: 14px; overflow: hidden; }
+.pillar-card .ph { padding: .85rem 1.1rem .7rem; display: flex; align-items: flex-start; gap: 10px; }
+.pillar-card .pnum { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #fff; flex-shrink: 0; }
+.pillar-card .picon { font-size: 18px; line-height: 1; flex-shrink: 0; }
+.pillar-card .pname { font-size: 15px; font-weight: 800; color: #fff; margin-top: 1px; }
+.pillar-card .pb { background: #fff; padding: .7rem 1.1rem .85rem; border-top: 3px solid rgba(0,0,0,.07); }
+.pillar-card .pb p { font-size: 13px; margin-bottom: .45rem; color: #2c2c2c; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: .4rem; }
+.tag { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+
+/* colour backgrounds */
+.bg1{background:linear-gradient(135deg,#1D3557,#2d5278)}
+.bg2{background:linear-gradient(135deg,#264653,#2a7a5a)}
+.bg3{background:linear-gradient(135deg,#5B2D8E,#8B44CC)}
+.bg4{background:linear-gradient(135deg,#B45309,#D97706)}
+.bg5{background:linear-gradient(135deg,#0B6E4F,#11a87a)}
+.bg6{background:linear-gradient(135deg,#1E5799,#2E86C1)}
+.bg7{background:linear-gradient(135deg,#7B3F00,#A0522D)}
+.bg8{background:linear-gradient(135deg,#6B2737,#9B3A52)}
+
+/* tag colours */
+.t1{background:#dbeafe;color:#1e40af} .t2{background:#dcfce7;color:#166534}
+.t3{background:#ede9fe;color:#5b21b6} .t4{background:#ffedd5;color:#9a3412}
+.t5{background:#d1fae5;color:#065f46} .t6{background:#e0f2fe;color:#075985}
+.t7{background:#fef3c7;color:#92400e} .t8{background:#fce7f3;color:#9d174d}
+
+/* ── DUA CARDS ── */
+.dua-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: 14px; margin: 1.5rem 0; }
+.dua-card { border-radius: var(--radius); overflow: hidden; border: 1px solid #e0ddd6; }
+.dua-card .dh { background: var(--navy); padding: .55rem 1rem; font-size: 11px; font-weight: 700; letter-spacing: .5px; color: var(--gold); text-transform: uppercase; }
+.dua-card .db { padding: .85rem 1rem; background: #fff; }
+.dua-card .ar { font-family: 'Amiri',serif; font-size: 20px; color: var(--navy); direction: rtl; text-align: right; background: none; margin-bottom: .35rem; }
+.dua-card .tr { font-size: 12px; font-style: italic; color: #555; margin-bottom: .2rem; }
+.dua-card .tl { font-size: 12px; color: #333; line-height: 1.5; }
+
+/* ── CASE STUDY ── */
+.case-study { border: 1px solid #d0cfc8; border-radius: var(--radius); overflow: hidden; margin: 1.5rem 0; }
+.cs-header  { background: var(--navy); color: #fff; padding: .7rem 1.25rem; font-weight: 700; font-size: 15px; }
+.cs-body    { padding: 1.25rem; background: #fff; }
+.cs-scenario { background: #f0f7ff; border-left: 4px solid var(--teal); border-radius: 0 8px 8px 0; padding: .75rem 1rem; margin-bottom: 1rem; font-size: 14px; line-height: 1.65; }
+.cs-label   { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: .4rem; margin-top: 1rem; }
+.cs-body ol, .cs-body ul { margin-left: 1.2rem; }
+.cs-body li { font-size: 14px; margin-bottom: .35rem; }
+
+/* ── LESSON BOX ── */
+.lesson-box { background: #e8f7f0; border-radius: 10px; padding: 1rem 1.25rem; margin: 1rem 0; border-left: 4px solid #0B6E4F; }
+.lesson-box .lb { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #0B6E4F; margin-bottom: .4rem; }
+.lesson-box p { font-size: 14px; margin: 0; }
+
+/* ── SCIENCE FACT ── */
+.science-fact { background: #fff; border: 1px solid #d8d6cf; border-radius: 10px; padding: .9rem 1.1rem; margin: .75rem 0; }
+.science-fact .sf-num { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: .25rem; }
+.science-fact p { font-size: 14px; margin: 0; }
+
+/* ── WORKBOOK IMAGE ── */
+.wb-img { width: 100%; max-width: 700px; border-radius: var(--radius); margin: 1.25rem 0; display: block; }
+.wb-img-sm { width: 100%; max-width: 420px; border-radius: var(--radius); margin: 1rem 0; display: block; }
+
+/* ── TOC ── */
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 10px; margin-top: 1.5rem; }
+.toc-item { display: flex; align-items: center; gap: 12px; padding: 1rem 1.25rem; background: #fff; border: 1px solid #e5e3dd; border-radius: var(--radius); text-decoration: none; color: var(--navy); transition: .2s; }
+.toc-item:hover { border-color: var(--teal); background: #f0f9fb; }
+.toc-num { background: var(--navy); color: var(--gold); font-family: 'Amiri',serif; font-size: 18px; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.toc-label { font-size: 14px; font-weight: 700; }
+.toc-sub   { font-size: 12px; color: var(--muted); }
+
+/* ── NAV BUTTONS ── */
+.page-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #ddd; }
+.page-nav a { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--navy); text-decoration: none; padding: .6rem 1.1rem; border: 1.5px solid var(--navy); border-radius: 8px; transition: .15s; }
+.page-nav a:hover { background: var(--navy); color: #fff; }
+
+/* ── COVER ── */
+#cover { background: var(--navy); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 3rem; text-align: center; position: relative; overflow: hidden; }
+#cover::before { content:''; position:absolute; top:-80px; right:-80px; width:400px; height:400px; border:2px solid rgba(201,168,76,.12); border-radius:50%; }
+#cover::after  { content:''; position:absolute; bottom:-100px; left:-100px; width:500px; height:500px; border:2px solid rgba(201,168,76,.08); border-radius:50%; }
+#cover .sio-logo-cover { font-family:'Goudy Bookletter 1911','Palatino Linotype','Book Antiqua',Palatino,Georgia,serif; font-size:48px; font-weight:400; font-style:italic; letter-spacing:4px; color:var(--gold); margin-bottom:.25rem; }
+#cover h1 { font-family:'Amiri',serif; font-size:clamp(24px,4vw,40px); color:#fff; line-height:1.25; margin-bottom:.4rem; }
+#cover .cover-sub { font-size:15px; color:rgba(255,255,255,.55); font-style:italic; margin-bottom:2.5rem; }
+#cover .cover-org { font-size:12px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,.4); margin-bottom:2rem; }
+.reg-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:480px; text-align:left; }
+.reg-field { background:rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.25); padding:.55rem .75rem; border-radius:4px 4px 0 0; }
+.reg-field span { display:block; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--gold); margin-bottom:3px; }
+.reg-field .val { color:rgba(255,255,255,.35); font-size:13px; display:block; min-height:18px; }
+.print-hint { margin-top:2rem; font-size:11px; color:rgba(255,255,255,.25); }
+
+/* ── FOOTER ── */
+.site-footer { background:var(--navy); text-align:center; padding:2rem 3rem; }
+.site-footer .sio-logo { font-size:22px; display:block; margin-bottom:.35rem; }
+.site-footer p { font-size:12px; color:rgba(255,255,255,.4); }
+
+/* ── PRINT ── */
+@media print {
+  #sidebar,#topbar { display:none!important; }
+  #main { margin-left:0; }
+  .page-section { padding:2rem 1.5rem; break-inside:avoid; }
+  .pillar-card,.dua-card,.case-study,.arabic-block,.quran-verse { break-inside:avoid; }
+  .page-nav { display:none; }
+  a { color:inherit; text-decoration:none; }
+}
+
+/* ── MOBILE ── */
+@media(max-width:720px){
+  #sidebar { transform:translateX(-100%); transition:.25s; }
+  #sidebar.open { transform:translateX(0); }
+  #main { margin-left:0; }
+  #topbar { display:flex; }
+  .page-section { padding:2rem 1.25rem; }
+  .reg-grid { grid-template-columns:1fr; }
+  #cover { padding:3rem 1.5rem; }
+}

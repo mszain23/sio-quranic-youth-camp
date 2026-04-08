@@ -1,0 +1,73 @@
+// Shared sidebar — injected by each page
+// Usage: document.getElementById('sidebar').innerHTML = SIDEBAR;
+const SIDEBAR = `
+<div class="sidebar-brand">
+  <div class="sio-logo">sio</div>
+  <div class="site-title">RSC Workbook 2026</div>
+  <div class="site-sub">Quranic Youth Camp</div>
+</div>
+<nav>
+  <a href="../index.html">🏠 Home</a>
+
+  <div class="nav-chapter">Chapter 1</div>
+  <a href="../chapters/ch1.html">Basics of Islam</a>
+  <a class="nav-sub" href="../chapters/ch1.html#basics">What is Islam?</a>
+  <a class="nav-sub" href="../chapters/ch1.html#pillars">5 Pillars</a>
+  <a class="nav-sub" href="../chapters/ch1.html#articles">6 Articles of Faith</a>
+
+  <div class="nav-chapter">Chapter 2</div>
+  <a href="../chapters/ch2.html">Taharah & Namaz</a>
+  <a class="nav-sub" href="../chapters/ch2.html#ghusl">Ghusl</a>
+  <a class="nav-sub" href="../chapters/ch2.html#tayammum">Tayammum</a>
+  <a class="nav-sub" href="../chapters/ch2.html#wudhu">Wudhu</a>
+  <a class="nav-sub" href="../chapters/ch2.html#azaan">Azaan</a>
+  <a class="nav-sub" href="../chapters/ch2.html#namaz">Namaz</a>
+
+  <div class="nav-chapter">Chapter 3</div>
+  <a href="../chapters/ch3.html">Purpose of Life</a>
+  <a class="nav-sub" href="../chapters/ch3.html#purpose">Purpose of Life</a>
+  <a class="nav-sub" href="../chapters/ch3.html#halalharam">Halal &amp; Haram</a>
+  <a class="nav-sub" href="../chapters/ch3.html#creator">Creator &amp; Creation</a>
+
+  <div class="nav-chapter">Chapter 4</div>
+  <a href="../chapters/ch4.html">Quran Study Circle</a>
+  <a class="nav-sub" href="../chapters/ch4.html#tafseer">Tafseer Guide</a>
+  <a class="nav-sub" href="../chapters/ch4.html#asr">Surah Al-Asr</a>
+  <a class="nav-sub" href="../chapters/ch4.html#maoon">Surah Al-Ma'oon</a>
+  <a class="nav-sub" href="../chapters/ch4.html#muminun">Surah Al-Muminun</a>
+  <a class="nav-sub" href="../chapters/ch4.html#kahf">Surah Al-Kahf</a>
+
+  <div class="nav-chapter">Chapter 5</div>
+  <a href="../chapters/ch5.html">Case Studies</a>
+  <a class="nav-sub" href="../chapters/ch5.html#socialmedia">Social Media</a>
+  <a class="nav-sub" href="../chapters/ch5.html#dawah">Dawah Dialogues</a>
+
+  <div class="nav-chapter">Chapter 6</div>
+  <a href="../chapters/ch6.html">Drama &amp; Skits</a>
+
+  <div class="nav-chapter">Chapter 7</div>
+  <a href="../chapters/ch7.html">Dua'en</a>
+
+  <div class="nav-chapter">Chapter 8</div>
+  <a href="../chapters/ch8.html">Puzzles &amp; Quiz</a>
+</nav>`;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('sidebar');
+  if (el) el.innerHTML = SIDEBAR;
+  // re-run active highlighting
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar nav a[href]').forEach(a => {
+    const href = (a.getAttribute('href') || '').split('/').pop().split('#')[0];
+    if (href === currentPage) a.classList.add('active');
+  });
+  // mobile toggle
+  const menuBtn = document.getElementById('menu-btn');
+  const sidebar = document.getElementById('sidebar');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+    document.addEventListener('click', e => {
+      if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) sidebar.classList.remove('open');
+    });
+  }
+});
