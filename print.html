@@ -1,385 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Download PDF — RSC Workbook 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
 <style>
-:root { --navy:#1D3557; --gold:#C9A84C; --teal:#457B9D; --bg:#f5f3ee; }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:#1a1a1a;min-height:100vh}
-.shell{max-width:680px;margin:0 auto;padding:3rem 2rem 5rem}
-.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy);text-decoration:none;margin-bottom:2rem;padding:.4rem .9rem;border:1.5px solid var(--navy);border-radius:8px;transition:.15s}
-.back:hover{background:var(--navy);color:#fff}
-.logo{font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;font-size:30px;font-style:italic;letter-spacing:3px;color:var(--gold)}
-h1{font-family:'Amiri',serif;font-size:28px;color:var(--navy);margin:.25rem 0 .2rem}
-.sub{font-size:13px;color:#666;margin-bottom:2.5rem}
-
-/* format cards */
-.fmt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:2rem}
-.fmt-card{background:#fff;border-radius:12px;border:2px solid #e0ddd6;padding:1.2rem 1rem;cursor:pointer;text-align:center;transition:.15s;position:relative;user-select:none}
-.fmt-card:hover{border-color:var(--teal)}
-.fmt-card.on{border-color:var(--navy);background:#eef1f7}
-.fmt-card.on::after{content:'✓';position:absolute;top:10px;right:12px;font-weight:800;color:var(--navy);font-size:14px}
-.fmt-icon{font-size:28px;margin-bottom:.4rem}
-.fmt-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.2rem}
-.fmt-desc{font-size:11px;color:#666;line-height:1.5}
-
-/* chapter checkboxes */
-.sec-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--navy);margin-bottom:.65rem}
-.quick-btns{display:flex;gap:8px;margin-bottom:.65rem}
-.quick-btns button{font-size:11px;font-weight:700;color:var(--teal);background:none;border:1px solid var(--teal);border-radius:6px;padding:.25rem .65rem;cursor:pointer;transition:.12s}
-.quick-btns button:hover{background:var(--teal);color:#fff}
-.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:2rem}
-.ch-item{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e0ddd6;border-radius:8px;padding:.5rem .85rem;cursor:pointer;font-size:13px;transition:.12s;user-select:none}
-.ch-item:hover{border-color:var(--teal)}
-.ch-item.on{border-color:var(--navy);background:#f0f4f8;font-weight:700}
-.ch-item input{accent-color:var(--navy);width:15px;height:15px;cursor:pointer}
-
-/* button */
-.dl-btn{width:100%;padding:.95rem;background:var(--navy);color:#fff;border:none;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s}
-.dl-btn:hover:not(:disabled){background:#2d5278}
-.dl-btn:disabled{background:#aaa;cursor:not-allowed}
-
-/* progress */
-.prog-wrap{margin-top:1.25rem;display:none}
-.prog-track{background:#e0ddd6;border-radius:20px;height:8px;overflow:hidden;margin-bottom:.5rem}
-.prog-bar{background:linear-gradient(90deg,var(--navy),var(--teal));height:100%;border-radius:20px;width:0%;transition:width .35s ease}
-.prog-txt{font-size:12px;color:#555;text-align:center}
-.prog-txt.ok{color:#059669;font-weight:700}
-.prog-txt.err{color:#dc2626;font-weight:700}
-
-/* note box */
-.note{background:#fdf6e3;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem 1rem;font-size:12.5px;line-height:1.6;margin-top:1.5rem}
-
-/* hidden render area */
-#rframe{position:fixed;left:-9999px;top:0;width:794px;visibility:hidden;background:#fff;pointer-events:none}
+.dl-shell{max-width:640px;margin:0 auto;padding:3rem 2rem 5rem}
+.dl-card{background:#fff;border-radius:16px;border:1px solid #e0ddd6;padding:1.75rem;margin-bottom:16px;display:flex;align-items:center;gap:20px;transition:.15s}
+.dl-card:hover{border-color:var(--teal);transform:translateY(-1px)}
+.dl-icon{font-size:40px;flex-shrink:0;width:56px;text-align:center}
+.dl-info{flex:1}
+.dl-title{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:3px}
+.dl-desc{font-size:13px;color:#666;line-height:1.5}
+.dl-meta{font-size:11px;color:#999;margin-top:4px}
+.dl-btn-link{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;text-decoration:none;font-size:13px;font-weight:700;padding:.55rem 1.1rem;border-radius:8px;transition:.15s;flex-shrink:0}
+.dl-btn-link:hover{background:var(--gold);color:var(--navy)}
+.note-box{background:#fdf6e3;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem 1rem;font-size:13px;line-height:1.6;margin-top:1.5rem}
 </style>
 </head>
 <body>
-<div class="shell">
-  <a class="back" href="index.html">← Back to Workbook</a>
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:.2rem">
-    <span class="logo">sio</span>
-    <h1>Download Workbook PDF</h1>
-  </div>
-  <p class="sub">Select your format and chapters, then download a properly formatted A4 PDF.</p>
+<nav id="topbar"><span class="sio-logo">sio</span><button id="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button></nav>
+<aside id="sidebar"></aside>
+<div id="main">
+<div class="dl-shell">
+  <a class="back-link" href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy);text-decoration:none;margin-bottom:2rem;padding:.4rem .9rem;border:1.5px solid var(--navy);border-radius:8px">← Back to Workbook</a>
 
-  <!-- FORMAT -->
-  <div class="sec-label">Format</div>
-  <div class="fmt-grid">
-    <div class="fmt-card on" id="fc" onclick="setFmt('colour')">
-      <div class="fmt-icon">🎨</div>
-      <div class="fmt-title">Full Colour</div>
-      <div class="fmt-desc">All infographics and card colours — best for screen &amp; colour printing</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:.3rem">
+    <span class="sio-logo" style="font-size:28px">sio</span>
+    <h2 style="font-family:'Amiri',serif;font-size:26px;color:var(--navy)">Download Workbook PDF</h2>
+  </div>
+  <p style="font-size:13px;color:#666;margin-bottom:2.5rem">RSC Workbook 2026 — Quranic Youth Camp · 26 pages · Properly formatted A4</p>
+
+  <div class="dl-card">
+    <div class="dl-icon">🎨</div>
+    <div class="dl-info">
+      <div class="dl-title">Full Colour Edition</div>
+      <div class="dl-desc">All infographics, card colours, Arabic styling and images — best for screen reading and colour printing.</div>
+      <div class="dl-meta">PDF · 26 pages · ~1.7 MB</div>
     </div>
-    <div class="fmt-card" id="fb" onclick="setFmt('bw')">
-      <div class="fmt-icon">🖨️</div>
-      <div class="fmt-title">Black &amp; White</div>
-      <div class="fmt-desc">High-contrast greyscale — ideal for photocopying &amp; laser printers</div>
+    <!-- REPLACE href WITH YOUR GOOGLE DRIVE DIRECT DOWNLOAD LINK -->
+    <a class="dl-btn-link" href="COLOUR_PDF_LINK_HERE" target="_blank" id="colour-link">
+      ⬇ Download
+    </a>
+  </div>
+
+  <div class="dl-card">
+    <div class="dl-icon">🖨️</div>
+    <div class="dl-info">
+      <div class="dl-title">Black &amp; White Edition</div>
+      <div class="dl-desc">High-contrast greyscale — optimised for photocopying and monochrome laser printing.</div>
+      <div class="dl-meta">PDF · 26 pages · ~1.6 MB</div>
     </div>
+    <!-- REPLACE href WITH YOUR GOOGLE DRIVE DIRECT DOWNLOAD LINK -->
+    <a class="dl-btn-link" href="BW_PDF_LINK_HERE" target="_blank" id="bw-link">
+      ⬇ Download
+    </a>
   </div>
 
-  <!-- CHAPTERS -->
-  <div class="sec-label">Select Chapters</div>
-  <div class="quick-btns">
-    <button onclick="allCh(true)">Select all</button>
-    <button onclick="allCh(false)">Deselect all</button>
-  </div>
-  <div class="ch-grid" id="chgrid">
-    <label class="ch-item on"><input type="checkbox" value="ch1" checked> Ch 1 — Basics of Islam</label>
-    <label class="ch-item on"><input type="checkbox" value="ch2" checked> Ch 2 — Taharah &amp; Namaz</label>
-    <label class="ch-item on"><input type="checkbox" value="ch3" checked> Ch 3 — Purpose of Life</label>
-    <label class="ch-item on"><input type="checkbox" value="ch4" checked> Ch 4 — Quran Study Circle</label>
-    <label class="ch-item on"><input type="checkbox" value="ch5" checked> Ch 5 — Case Studies</label>
-    <label class="ch-item on"><input type="checkbox" value="ch6" checked> Ch 6 — Drama &amp; Skits</label>
-    <label class="ch-item on"><input type="checkbox" value="ch7" checked> Ch 7 — Dua'en</label>
-    <label class="ch-item on"><input type="checkbox" value="ch8" checked> Ch 8 — Puzzles &amp; Quiz</label>
-  </div>
-
-  <button class="dl-btn" id="dlbtn" onclick="go()">⬇ &nbsp;Download PDF</button>
-
-  <div class="prog-wrap" id="pw">
-    <div class="prog-track"><div class="prog-bar" id="pb"></div></div>
-    <div class="prog-txt" id="pt">Preparing...</div>
-  </div>
-
-  <div class="note">
-    <strong>How it works:</strong> Each selected chapter is fetched from the live site, rendered at A4 width (794px) with all Arabic text and infographics, then assembled into a single PDF. Depending on your internet speed, this may take 30–90 seconds.
+  <div class="note-box">
+    <strong>How to get the download links:</strong><br>
+    1. Upload both PDFs to Google Drive<br>
+    2. Right-click each file → <em>Get link</em> → set to <em>Anyone with the link</em><br>
+    3. Change the sharing URL from <code>…/view?usp=sharing</code> to <code>…/export?format=pdf</code><br>
+    4. Paste the new URLs into <code>print.html</code> where it says <code>COLOUR_PDF_LINK_HERE</code> and <code>BW_PDF_LINK_HERE</code>
   </div>
 </div>
-
-<div id="rframe"></div>
-
-<!-- Load jsPDF + html2canvas from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
-const BASE = '.';
-const CH = {
-  ch1:'chapters/ch1.html', ch2:'chapters/ch2.html',
-  ch3:'chapters/ch3.html', ch4:'chapters/ch4.html',
-  ch5:'chapters/ch5.html', ch6:'chapters/ch6.html',
-  ch7:'chapters/ch7.html', ch8:'chapters/ch8.html'
-};
-
-let fmt = 'colour';
-
-function setFmt(f) {
-  fmt = f;
-  document.getElementById('fc').classList.toggle('on', f==='colour');
-  document.getElementById('fb').classList.toggle('on', f==='bw');
-}
-
-function allCh(v) {
-  document.querySelectorAll('#chgrid input').forEach(cb => {
-    cb.checked = v;
-    cb.closest('.ch-item').classList.toggle('on', v);
-  });
-}
-
-document.querySelectorAll('#chgrid input').forEach(cb => {
-  cb.addEventListener('change', () => cb.closest('.ch-item').classList.toggle('on', cb.checked));
-});
-
-function prog(pct, txt, cls) {
-  document.getElementById('pb').style.width = pct + '%';
-  const el = document.getElementById('pt');
-  el.textContent = txt;
-  el.className = 'prog-txt' + (cls ? ' ' + cls : '');
-}
-
-/* Wait for all images in a container to load */
-function waitImages(container, timeout=10000) {
-  return new Promise(res => {
-    const imgs = [...container.querySelectorAll('img')];
-    if (!imgs.length) return res();
-    let n = imgs.length;
-    const done = () => { if (--n <= 0) res(); };
-    imgs.forEach(img => {
-      if (img.complete && img.naturalWidth > 0) { done(); return; }
-      img.onload = img.onerror = done;
-      // Force reload with crossOrigin if needed
-      if (!img.complete) {
-        const src = img.src;
-        img.crossOrigin = 'anonymous';
-        img.src = src + (src.includes('?') ? '&' : '?') + '_t=' + Date.now();
-      }
-    });
-    setTimeout(res, timeout);
-  });
-}
-
-/* Render one element to an A4-wide PNG data URL */
-async function renderToCanvas(el) {
-  return await html2canvas(el, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: false,
-    backgroundColor: '#ffffff',
-    width: 794,
-    windowWidth: 794,
-    logging: false,
-    imageTimeout: 15000,
-    onclone: (doc, clone) => {
-      clone.style.visibility = 'visible';
-      clone.style.left = '0';
-    }
-  });
-}
-
-/* Build a clean, self-contained print HTML from raw chapter HTML */
-function buildSection(rawHTML, isBW) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(rawHTML, 'text/html');
-
-  // Remove things we don't want printed
-  ['#sidebar','#topbar','.site-footer','.page-nav',
-   '.print-fab','script','noscript'].forEach(sel =>
-    doc.querySelectorAll(sel).forEach(el => el.remove())
-  );
-
-  // Fix image src paths to be absolute
-  doc.querySelectorAll('img[src]').forEach(img => {
-    const s = img.getAttribute('src') || '';
-    if (s.startsWith('../images/')) {
-      img.setAttribute('src', BASE + '/images/' + s.replace('../images/',''));
-    } else if (s.startsWith('/sio-quranic-youth-camp/images/')) {
-      img.setAttribute('src', BASE + '/images/' + s.replace('/sio-quranic-youth-camp/images/',''));
-    }
-    img.setAttribute('crossorigin', 'anonymous');
-    img.setAttribute('loading', 'eager');
-  });
-
-  // Remove sidebar/main margin
-  const main = doc.getElementById('main');
-  if (main) {
-    main.style.marginLeft = '0';
-    main.style.padding = '0';
-  }
-
-  const inner = (main || doc.body).innerHTML;
-
-  const bwStyle = isBW ? `
-    img { filter: grayscale(100%) contrast(1.15) !important; }
-    .bg1,.bg2,.bg3,.bg4,.bg5,.bg6,.bg7,.bg8 { background: #111 !important; }
-    .pillar-card .ph, .asr-card .ac-head, .kahf-card .kh,
-    .muminun-grid .mu-num, .cs-header, .dua-card .dh,
-    .ch-num, .jj-label, .toc-num, .hadith-types .ht-type .ht-head,
-    .pt-card .pt-head, .pf-box, .arabic-block, .shahada-banner {
-      background: #111 !important; color: #fff !important;
-    }
-    .pf-box.gold { background: #333 !important; color: #fff !important; }
-    .box, .lesson-box, .science-fact, .cs-scenario, .quran-verse, .quiz-section {
-      border-color: #555 !important; background: #f5f5f5 !important;
-    }
-    .tag { background: #e0e0e0 !important; color: #000 !important; border: 1px solid #888 !important; }
-    .data-table th, .rakat-table th { background: #333 !important; color: #fff !important; }
-    .hh-table th.halal, .hh-table th.haram { background: #333 !important; color: #fff !important; }
-    .hh-table td.halal-item, .hh-table td.haram-item { background: #f0f0f0 !important; color: #000 !important; }
-    .pillar-card .pb, .dua-card .db, .jj-content, .mu-content { background: #fff !important; }
-    a { color: #000 !important; text-decoration: none !important; }
-  ` : '';
-
-  return `
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="${BASE}/css/style.css">
-    <style>
-      body{margin:0;padding:0;background:#fff}
-      #sidebar,#topbar,.site-footer,.page-nav,.print-fab{display:none!important}
-      #main{margin-left:0!important;padding:0!important}
-      .page-section{max-width:100%!important;padding:2rem 2.5rem!important}
-      img{max-width:100%;height:auto}
-      ${bwStyle}
-    </style>
-    <div id="main">${inner}</div>
-  `;
-}
-
-async function go() {
-  const selected = [...document.querySelectorAll('#chgrid input:checked')].map(cb => cb.value);
-  if (!selected.length) { alert('Please select at least one chapter.'); return; }
-
-  const btn = document.getElementById('dlbtn');
-  btn.disabled = true;
-  document.getElementById('pw').style.display = 'block';
-
-  try {
-    const { jsPDF } = window.jspdf;
-    const isBW = fmt === 'bw';
-    const A4W = 210, A4H = 297; // mm
-    const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    let firstPage = true;
-
-    const rframe = document.getElementById('rframe');
-
-    // ── COVER PAGE ──
-    prog(3, 'Rendering cover page...');
-    rframe.innerHTML = `
-      <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-      <style>body{margin:0;background:#fff;font-family:'Nunito',sans-serif}</style>
-      <div style="width:794px;min-height:1123px;background:${isBW?'#fff':'#1D3557'};display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem;border:${isBW?'3px solid #000':'none'}">
-        <div style="font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;font-size:72px;font-style:italic;letter-spacing:6px;color:${isBW?'#000':'#C9A84C'};margin-bottom:.5rem">sio</div>
-        <h1 style="font-family:'Amiri',serif;font-size:42px;color:${isBW?'#000':'#fff'};margin-bottom:.35rem;line-height:1.2">Quranic Youth Camp</h1>
-        <p style="font-size:18px;color:${isBW?'#444':'rgba(255,255,255,.6)'};font-style:italic;margin-bottom:.4rem">Towards a Meaningful Life</p>
-        <p style="font-size:13px;color:${isBW?'#666':'rgba(255,255,255,.4)'};letter-spacing:2.5px;text-transform:uppercase">RSC Workbook 2026</p>
-        <p style="font-size:12px;color:${isBW?'#555':'rgba(255,255,255,.35)'};margin-top:.75rem">Students Islamic Organisation of India — Karnataka Zone</p>
-        <div style="margin-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:400px;text-align:left">
-          ${['Name','Father\'s Name','Phone No.','Education','Unit','District'].map(f=>`
-            <div style="border-bottom:1px solid ${isBW?'#999':'rgba(255,255,255,.3)'};padding:.4rem .5rem">
-              <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:${isBW?'#555':'#C9A84C'};margin-bottom:4px">${f}</div>
-              <div style="min-height:18px"></div>
-            </div>`).join('')}
-          <div style="grid-column:span 2;border-bottom:1px solid ${isBW?'#999':'rgba(255,255,255,.3)'};padding:.4rem .5rem">
-            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:${isBW?'#555':'#C9A84C'};margin-bottom:4px">Team Name / No.</div>
-            <div style="min-height:18px"></div>
-          </div>
-        </div>
-      </div>`;
-
-    await new Promise(r => setTimeout(r, 1200)); // font settle
-    const coverCanvas = await renderToCanvas(rframe);
-    const coverImg = coverCanvas.toDataURL('image/png');
-    pdf.addImage(coverImg, 'PNG', 0, 0, A4W, A4H);
-    firstPage = false;
-
-    // ── CHAPTER PAGES ──
-    for (let i = 0; i < selected.length; i++) {
-      const key = selected[i];
-      const pct = 10 + Math.round((i / selected.length) * 80);
-      prog(pct, `Fetching Chapter ${key.replace('ch','')}...`);
-
-      // Fetch the chapter page
-      const resp = await fetch(BASE + '/' + CH[key]);
-      if (!resp.ok) throw new Error('Could not load ' + CH[key]);
-      const rawHTML = await resp.text();
-
-      prog(pct + 2, `Rendering Chapter ${key.replace('ch','')}...`);
-
-      // Inject into render frame
-      rframe.innerHTML = buildSection(rawHTML, isBW);
-
-      // Wait for images + fonts
-      await waitImages(rframe, 12000);
-      await new Promise(r => setTimeout(r, 1500));
-
-      // Render to canvas
-      const canvas = await renderToCanvas(rframe);
-
-      // Convert to PNG data URL — PNG avoids the UNKNOWN type error
-      const imgData = canvas.toDataURL('image/png');
-
-      // Calculate height in mm at A4 width
-      const canvasAspect = canvas.height / canvas.width;
-      const imgHeightMM = A4W * canvasAspect;
-
-      // Slice into A4 pages
-      let yOffset = 0;
-      let sliceNum = 0;
-      while (yOffset < imgHeightMM) {
-        if (!firstPage || sliceNum > 0) pdf.addPage();
-        firstPage = false;
-
-        // Position: we shift the image up by yOffset mm
-        pdf.addImage(imgData, 'PNG', 0, -yOffset, A4W, imgHeightMM);
-
-        // Add subtle page number
-        pdf.setFontSize(8);
-        pdf.setTextColor(180, 180, 180);
-        pdf.text(`RSC Workbook 2026  ·  Ch ${key.replace('ch','')}`, A4W/2, A4H - 4, { align: 'center' });
-
-        yOffset += A4H;
-        sliceNum++;
-      }
-
-      prog(pct + 5, `Chapter ${key.replace('ch','')} done ✓`);
-    }
-
-    // ── FINALISE ──
-    prog(96, 'Saving PDF...');
-    pdf.setProperties({
-      title: 'RSC Workbook 2026 — Quranic Youth Camp',
-      author: 'SIO Karnataka',
-      subject: 'Students Islamic Organisation of India, Karnataka Zone',
-      creator: 'SIO RSC Workbook 2026'
-    });
-
-    const fname = `RSC_Workbook_2026_${isBW?'BW':'Colour'}.pdf`;
-    pdf.save(fname);
-
-    rframe.innerHTML = '';
-    prog(100, '✓ PDF downloaded! Check your Downloads folder.', 'ok');
-    btn.disabled = false;
-
-  } catch(e) {
-    console.error(e);
-    prog(0, '✗ ' + e.message, 'err');
-    document.getElementById('rframe').innerHTML = '';
-    btn.disabled = false;
-  }
-}
-</script>
+</div>
+<script src="../js/nav.js"></script>
 </body>
 </html>
