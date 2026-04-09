@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Download PDF — RSC Workbook 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --navy: #1D3557; --gold: #C9A84C; --teal: #457B9D;
+  --bg: #f5f3ee; --white: #fff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg); color: #1a1a1a;
+  min-height: 100vh;
+}
+
+/* ── UI SHELL ── */
+.ui-shell {
+  max-width: 700px; margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: var(--navy);
+  text-decoration: none; margin-bottom: 2rem;
+  padding: .4rem .9rem; border: 1.5px solid var(--navy);
+  border-radius: 8px; transition: .15s;
+}
+.back-link:hover { background: var(--navy); color: #fff; }
+
+.page-title {
+  font-family: 'Amiri', serif;
+  font-size: 32px; color: var(--navy);
+  margin-bottom: .3rem;
+}
+.page-sub { font-size: 14px; color: #666; margin-bottom: 2.5rem; }
+
+/* ── OPTION CARDS ── */
+.option-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 2.5rem;
+}
+.option-card {
+  background: #fff; border-radius: 12px;
+  border: 2px solid #e0ddd6; padding: 1.4rem 1.2rem;
+  cursor: pointer; transition: .2s; text-align: center;
+  position: relative;
+}
+.option-card:hover { border-color: var(--teal); }
+.option-card.selected { border-color: var(--navy); background: #eef1f7; }
+.option-card.selected::after {
+  content: '✓'; position: absolute; top: 10px; right: 12px;
+  font-size: 14px; font-weight: 800; color: var(--navy);
+}
+.option-card .oc-icon { font-size: 32px; margin-bottom: .5rem; display: block; }
+.option-card .oc-title { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: .2rem; }
+.option-card .oc-desc { font-size: 12px; color: #666; line-height: 1.5; }
+
+/* ── CHAPTER SELECTOR ── */
+.chapter-selector { margin-bottom: 2rem; }
+.cs-label { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: .75rem; text-transform: uppercase; letter-spacing: 1px; }
+.chapter-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.chapter-check {
+  display: flex; align-items: center; gap: 8px;
+  background: #fff; border: 1px solid #e0ddd6; border-radius: 8px;
+  padding: .55rem .85rem; cursor: pointer; font-size: 13px;
+  transition: .15s; user-select: none;
+}
+.chapter-check:hover { border-color: var(--teal); }
+.chapter-check input { accent-color: var(--navy); width: 15px; height: 15px; }
+.chapter-check.checked { border-color: var(--navy); background: #f0f4f8; font-weight: 700; }
+
+.select-all-row {
+  display: flex; gap: 10px; margin-bottom: .75rem;
+}
+.select-all-row button {
+  font-size: 12px; font-weight: 700; color: var(--teal);
+  background: none; border: 1px solid var(--teal); border-radius: 6px;
+  padding: .3rem .75rem; cursor: pointer; transition: .15s;
+}
+.select-all-row button:hover { background: var(--teal); color: #fff; }
+
+/* ── DOWNLOAD BUTTON ── */
+.dl-btn {
+  width: 100%; padding: 1rem;
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 12px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
+  letter-spacing: .3px; transition: .2s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.dl-btn:hover { background: #2d5278; }
+.dl-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+/* ── PROGRESS ── */
+.progress-wrap { margin-top: 1.5rem; display: none; }
+.progress-bar-bg {
+  background: #e0ddd6; border-radius: 20px; height: 10px;
+  overflow: hidden; margin-bottom: .6rem;
+}
+.progress-bar {
+  background: linear-gradient(90deg, var(--navy), var(--teal));
+  height: 100%; border-radius: 20px; width: 0%;
+  transition: width .4s ease;
+}
+.progress-label {
+  font-size: 13px; color: #555; text-align: center;
+}
+.progress-label.done { color: #059669; font-weight: 700; }
+.progress-label.error { color: #dc2626; font-weight: 700; }
+
+/* ── INFO BOX ── */
+.info-box {
+  background: #fdf6e3; border-left: 4px solid var(--gold);
+  border-radius: 0 8px 8px 0; padding: .85rem 1rem;
+  font-size: 13px; line-height: 1.6; margin-top: 1.5rem;
+}
+
+/* ── HIDDEN RENDER FRAME ── */
+#render-frame {
+  position: fixed; left: -9999px; top: 0;
+  width: 794px; /* A4 at 96dpi */
+  visibility: hidden;
+  background: #fff;
+}
+</style>
+</head>
+<body>
+
+<div class="ui-shell">
+  <a class="back-link" href="index.html">← Back to Workbook</a>
+
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:.3rem">
+    <div style="font-family:'Goudy Bookletter 1911','Palatino Linotype',Palatino,Georgia,serif;font-size:28px;font-style:italic;letter-spacing:2px;color:var(--gold)">sio</div>
+    <h1 class="page-title">Download Workbook PDF</h1>
+  </div>
+  <p class="page-sub">Choose your format, select chapters, and download a properly formatted A4 PDF.</p>
+
+  <!-- FORMAT CHOICE -->
+  <div style="font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Format</div>
+  <div class="option-grid">
+    <div class="option-card selected" id="opt-colour" onclick="selectFormat('colour')">
+      <span class="oc-icon">🎨</span>
+      <div class="oc-title">Full Colour</div>
+      <div class="oc-desc">All infographics, card colours, and Arabic styling — best for screen reading and colour printing</div>
+    </div>
+    <div class="option-card" id="opt-bw" onclick="selectFormat('bw')">
+      <span class="oc-icon">🖨️</span>
+      <div class="oc-title">Black & White</div>
+      <div class="oc-desc">High-contrast greyscale — optimised for photocopying and monochrome laser printers</div>
+    </div>
+  </div>
+
+  <!-- CHAPTER SELECTOR -->
+  <div class="chapter-selector">
+    <div class="cs-label">Select Chapters</div>
+    <div class="select-all-row">
+      <button onclick="selectAll(true)">Select All</button>
+      <button onclick="selectAll(false)">Deselect All</button>
+    </div>
+    <div class="chapter-checks" id="chapter-checks">
+      <label class="chapter-check checked"><input type="checkbox" value="ch1" checked> Ch 1 — Basics of Islam</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch2" checked> Ch 2 — Taharah & Namaz</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch3" checked> Ch 3 — Purpose of Life</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch4" checked> Ch 4 — Quran Study Circle</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch5" checked> Ch 5 — Case Studies</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch6" checked> Ch 6 — Drama & Skits</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch7" checked> Ch 7 — Dua'en</label>
+      <label class="chapter-check checked"><input type="checkbox" value="ch8" checked> Ch 8 — Puzzles & Quiz</label>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD BUTTON -->
+  <button class="dl-btn" id="dl-btn" onclick="startDownload()">
+    <span>⬇</span> <span id="dl-btn-text">Download PDF</span>
+  </button>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="progress-label" id="progress-label">Preparing...</div>
+  </div>
+
+  <div class="info-box">
+    <strong>How it works:</strong> Each chapter is rendered from the live website at A4 width, then assembled into a single PDF. Arabic text, infographics, and all images are captured exactly as they appear on screen. Large chapters with many images may take a moment to process.
+  </div>
+</div>
+
+<!-- Hidden render target -->
+<div id="render-frame"></div>
+
+<script>
+const BASE = '.';
+const CHAPTERS = {
+  ch1: { file: 'chapters/ch1.html', title: 'Chapter 1 — Basics of Islam' },
+  ch2: { file: 'chapters/ch2.html', title: 'Chapter 2 — Taharah & Namaz' },
+  ch3: { file: 'chapters/ch3.html', title: 'Chapter 3 — Purpose of Life' },
+  ch4: { file: 'chapters/ch4.html', title: 'Chapter 4 — Quran Study Circle' },
+  ch5: { file: 'chapters/ch5.html', title: 'Chapter 5 — Case Studies' },
+  ch6: { file: 'chapters/ch6.html', title: 'Chapter 6 — Drama & Skits' },
+  ch7: { file: 'chapters/ch7.html', title: 'Chapter 7 — Dua\'en' },
+  ch8: { file: 'chapters/ch8.html', title: 'Chapter 8 — Puzzles & Quiz' },
+};
+
+let selectedFormat = 'colour';
+
+function selectFormat(f) {
+  selectedFormat = f;
+  document.getElementById('opt-colour').classList.toggle('selected', f === 'colour');
+  document.getElementById('opt-bw').classList.toggle('selected', f === 'bw');
+}
+
+function selectAll(val) {
+  document.querySelectorAll('#chapter-checks input[type=checkbox]').forEach(cb => {
+    cb.checked = val;
+    cb.closest('.chapter-check').classList.toggle('checked', val);
+  });
+}
+
+document.querySelectorAll('#chapter-checks input').forEach(cb => {
+  cb.addEventListener('change', () => {
+    cb.closest('.chapter-check').classList.toggle('checked', cb.checked);
+  });
+});
+
+function setProgress(pct, label, state) {
+  document.getElementById('progress-bar').style.width = pct + '%';
+  const lbl = document.getElementById('progress-label');
+  lbl.textContent = label;
+  lbl.className = 'progress-label' + (state ? ' ' + state : '');
+}
+
+async function loadChapterHTML(chKey) {
+  const url = BASE + '/' + CHAPTERS[chKey].file;
+  const resp = await fetch(url);
+  const html = await resp.text();
+  return html;
+}
+
+function buildPrintDoc(chapterHTMLs, isBW) {
+  // Build a single clean print document from all chapters
+  const frame = document.getElementById('render-frame');
+
+  // Extract <style> from the main stylesheet by reading document styles
+  // and build a self-contained print document
+  let combined = `
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="${BASE}/css/style.css">
+      <style>
+        /* Print-specific overrides */
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #fff; font-size: 14px; }
+        #sidebar, #topbar, .page-nav, .site-footer, nav, #menu-btn { display: none !important; }
+        #main { margin-left: 0 !important; }
+        .page-section { padding: 2.5rem 2.5rem; max-width: 100%; page-break-after: always; }
+        .page-section:last-child { page-break-after: auto; }
+        img { max-width: 100%; height: auto; }
+        .chapter-page-break { page-break-before: always; }
+        ${isBW ? `
+        /* B&W overrides */
+        * { color: #000 !important; background: #fff !important;
+            border-color: #999 !important; box-shadow: none !important; }
+        .bg1,.bg2,.bg3,.bg4,.bg5,.bg6,.bg7,.bg8,
+        .pillar-card .ph, .asr-card .ac-head, .kahf-card .kh,
+        .muminun-grid .mu-num, .cs-header, .dua-card .dh,
+        .chapter-header .ch-num, .jj-label, .toc-num,
+        .hadith-types .ht-type .ht-head,
+        .pt-card .pt-head, .pf-box {
+          background: #1a1a1a !important; color: #fff !important;
+        }
+        .arabic-block, .shahada-banner {
+          background: #1a1a1a !important;
+        }
+        .arabic-block .ar, .arabic-block .tr, .arabic-block .tl,
+        .shahada-banner .ar, .shahada-banner .tr, .shahada-banner .tl {
+          color: #fff !important;
+        }
+        .box, .info-box, .lesson-box, .science-fact, .cs-scenario,
+        .quran-verse, .quiz-section {
+          border-color: #000 !important;
+          background: #f5f5f5 !important;
+        }
+        .pillar-card .pb, .dua-card .db, .jj-content,
+        .toc-item, .mu-content { background: #fff !important; }
+        img { filter: grayscale(100%) contrast(1.1); }
+        .tag { border: 1px solid #333 !important; background: #eee !important; }
+        .data-table th, .rakat-table th, .hh-table th.halal,
+        .hh-table th.haram { background: #333 !important; color: #fff !important; }
+        .hh-table td.halal-item, .hh-table td.haram-item {
+          background: #f0f0f0 !important; color: #000 !important;
+        }
+        a { color: #000 !important; text-decoration: none !important; }
+        .saw, .as, .ra, .swt { color: #333 !important; }
+        ` : ''}
+      </style>
+    </head>
+    <body>
+  `;
+
+  // Cover page
+  combined += `
+    <div class="page-section" style="text-align:center;background:#1a1a1a;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;${isBW?'background:#fff;border:2px solid #000;':''}">
+      <div style="font-family:'Goudy Bookletter 1911','Palatino Linotype',Palatino,Georgia,serif;font-size:60px;font-style:italic;letter-spacing:4px;color:${isBW?'#000':'#C9A84C'};margin-bottom:.5rem">sio</div>
+      <h1 style="font-family:'Amiri',serif;font-size:36px;color:${isBW?'#000':'#fff'};margin-bottom:.3rem">Quranic Youth Camp</h1>
+      <p style="font-size:16px;color:${isBW?'#333':'rgba(255,255,255,.6)'};font-style:italic;margin-bottom:.5rem">Towards a Meaningful Life</p>
+      <p style="font-size:13px;color:${isBW?'#555':'rgba(255,255,255,.4)'};letter-spacing:2px;text-transform:uppercase">RSC Workbook 2026</p>
+      <p style="font-size:11px;color:${isBW?'#555':'rgba(255,255,255,.35)'};margin-top:1rem">Students Islamic Organisation of India — Karnataka Zone</p>
+      <div style="margin-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:12px;width:380px;text-align:left">
+        ${['Name','Father\'s Name','Phone No.','Education','Unit','District'].map(f=>`
+          <div style="border-bottom:1px solid ${isBW?'#999':'rgba(255,255,255,.3)'};padding:.4rem .5rem">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:${isBW?'#555':'#C9A84C'};margin-bottom:3px">${f}</div>
+            <div style="min-height:16px"></div>
+          </div>
+        `).join('')}
+        <div style="grid-column:span 2;border-bottom:1px solid ${isBW?'#999':'rgba(255,255,255,.3)'};padding:.4rem .5rem">
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:${isBW?'#555':'#C9A84C'};margin-bottom:3px">Team Name / No.</div>
+          <div style="min-height:16px"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Extract just the main content from each chapter HTML
+  chapterHTMLs.forEach(({ key, html }) => {
+    // Parse the HTML to extract only the section content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Remove sidebar, topbar, footer, nav buttons, scripts
+    ['#sidebar','#topbar','.site-footer','.page-nav','script'].forEach(sel => {
+      doc.querySelectorAll(sel).forEach(el => el.remove());
+    });
+
+    // Fix image paths — make them absolute
+    doc.querySelectorAll('img[src]').forEach(img => {
+      const src = img.getAttribute('src');
+      if (src && src.startsWith('../images/')) {
+        img.setAttribute('src', BASE + '/images/' + src.replace('../images/', ''));
+      }
+    });
+
+    // Get inner content of #main
+    const main = doc.getElementById('main');
+    if (main) {
+      combined += `<div class="chapter-page-break">${main.innerHTML}</div>`;
+    }
+  });
+
+  combined += `</body></html>`;
+  return combined;
+}
+
+async function startDownload() {
+  const selected = Array.from(document.querySelectorAll('#chapter-checks input:checked')).map(cb => cb.value);
+  if (selected.length === 0) {
+    alert('Please select at least one chapter.');
+    return;
+  }
+
+  const btn = document.getElementById('dl-btn');
+  btn.disabled = true;
+  document.getElementById('progress-wrap').style.display = 'block';
+
+  try {
+    const isBW = selectedFormat === 'bw';
+    const { jsPDF } = window.jspdf;
+
+    // Step 1: Load all selected chapter HTMLs
+    const chapterHTMLs = [];
+    for (let i = 0; i < selected.length; i++) {
+      const key = selected[i];
+      setProgress(
+        Math.round((i / selected.length) * 40),
+        `Loading ${CHAPTERS[key].title}...`
+      );
+      const html = await loadChapterHTML(key);
+      chapterHTMLs.push({ key, html });
+    }
+
+    // Step 2: Build combined print document
+    setProgress(45, 'Building document...');
+    const printHTML = buildPrintDoc(chapterHTMLs, isBW);
+
+    // Step 3: Inject into hidden render frame
+    const frame = document.getElementById('render-frame');
+    frame.style.visibility = 'hidden';
+    frame.innerHTML = printHTML;
+
+    // Wait for fonts and images to load
+    setProgress(50, 'Waiting for fonts and images...');
+    await new Promise(resolve => {
+      // Wait for all images in the frame
+      const imgs = frame.querySelectorAll('img');
+      let pending = imgs.length;
+      if (pending === 0) { resolve(); return; }
+      imgs.forEach(img => {
+        if (img.complete) { pending--; if (pending === 0) resolve(); }
+        else {
+          img.onload = img.onerror = () => { pending--; if (pending === 0) resolve(); };
+        }
+      });
+      // Timeout safety
+      setTimeout(resolve, 8000);
+    });
+
+    // Extra font settle time
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Step 4: Render sections to canvas and build PDF
+    // A4 dimensions in mm: 210 x 297
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const A4_W = 210; const A4_H = 297;
+    const pxPerMm = 3.7795275591; // at 96dpi
+
+    // Render the entire frame as one tall canvas, then slice into A4 pages
+    setProgress(55, 'Rendering pages — this may take a minute...');
+
+    const canvas = await html2canvas(frame, {
+      scale: 2,           // 2x for crisp output
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      width: 794,         // A4 at 96dpi
+      windowWidth: 794,
+      logging: false,
+      onclone: (clonedDoc) => {
+        // Make render frame visible in clone
+        const f = clonedDoc.getElementById('render-frame');
+        if (f) { f.style.visibility = 'visible'; f.style.left = '0'; }
+      }
+    });
+
+    setProgress(80, 'Assembling PDF pages...');
+
+    const imgData = canvas.toDataURL('image/jpeg', isBW ? 0.85 : 0.92);
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = A4_W;
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    // Slice into A4 pages
+    let heightLeft = pdfHeight;
+    let position = 0;
+    let pageNum = 0;
+
+    while (heightLeft > 0) {
+      if (pageNum > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, pdfHeight);
+      position -= A4_H;
+      heightLeft -= A4_H;
+      pageNum++;
+      setProgress(80 + Math.min(18, pageNum * 2), `Building page ${pageNum}...`);
+    }
+
+    // Step 5: Add metadata
+    pdf.setProperties({
+      title: 'RSC Workbook 2026 — Quranic Youth Camp',
+      subject: 'Students Islamic Organisation of India, Karnataka Zone',
+      author: 'SIO Karnataka',
+      keywords: 'Islam, Quran, Youth, Workbook',
+      creator: 'SIO RSC Workbook 2026'
+    });
+
+    setProgress(100, 'Download starting...', 'done');
+
+    const filename = `RSC_Workbook_2026_${isBW ? 'BW' : 'Colour'}_${selected.join('-')}.pdf`;
+    pdf.save(filename);
+
+    document.getElementById('dl-btn-text').textContent = 'Download PDF';
+    btn.disabled = false;
+    setTimeout(() => setProgress(100, '✓ PDF downloaded successfully!', 'done'), 500);
+
+  } catch (err) {
+    console.error(err);
+    setProgress(0, '✗ Error: ' + err.message, 'error');
+    document.getElementById('dl-btn-text').textContent = 'Download PDF';
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
